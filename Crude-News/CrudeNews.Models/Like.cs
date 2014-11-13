@@ -14,6 +14,6 @@
 
         public virtual Article Article { get; set; }
 
-        public DateTime DateCreated { get; set; }
+        public DateTime? DateCreated { get; set; }
     }
 }

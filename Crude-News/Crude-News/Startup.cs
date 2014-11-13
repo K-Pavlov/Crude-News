@@ -1,6 +1,9 @@
 ﻿using Microsoft.Owin;
 using Owin;
 using CrudeNews.Models;
+using CrudeNews.Data;
+using System;
+
 [assembly: OwinStartupAttribute(typeof(CrudeNews.Startup))]
 namespace CrudeNews
 {

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CrudeNews.Data;
+using CrudeNews.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +10,19 @@ namespace CrudeNews.Controllers
 {
     public class HomeController : Controller
     {
+        private ICrudeNewsData Data { get; set; }
+
+        public HomeController()
+            : this(new CrudeNewsData())
+        {
+
+        }
+
+        public HomeController(ICrudeNewsData data)
+        {
+            this.Data = data;
+        }
+
         public ActionResult Index()
         {
             return View();
@@ -16,7 +31,12 @@ namespace CrudeNews.Controllers
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
+            this.Data.Categories.Add(new Category
+            {
+                Name = "Cool category"
+            });
 
+            this.Data.SaveChanges();
             return View();
         }
 

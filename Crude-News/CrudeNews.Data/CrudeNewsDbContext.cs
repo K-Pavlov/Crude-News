@@ -4,12 +4,14 @@
 
     using CrudeNews.Models;
     using Microsoft.AspNet.Identity.EntityFramework;
+    using CrudeNews.Data.Migrations;
 
     public class CrudeNewsDbContext : IdentityDbContext<User>
     {
         public CrudeNewsDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<CrudeNewsDbContext, Configuration>());
         }
 
         public IDbSet<Article> Articles { get; set; }

@@ -10,6 +10,11 @@
         private CrudeNewsDbContext context;
         private IDictionary<Type, object> repositories;
 
+        public CrudeNewsData()
+            :this(new CrudeNewsDbContext())
+        {
+        }
+
         public CrudeNewsData(CrudeNewsDbContext context)
         {
             this.context = context;
@@ -41,7 +46,7 @@
             get { return GetRepository<Tag>(); }
         }
 
-        public IRepository<Like> Lieks
+        public IRepository<Like> Likes
         {
             get { return this.GetRepository<Like>(); }
         }
