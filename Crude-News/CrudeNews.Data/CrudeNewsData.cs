@@ -46,9 +46,9 @@
             get { return GetRepository<Tag>(); }
         }
 
-        public IRepository<Like> Likes
+        public IRepository<ArticleLike> Likes
         {
-            get { return this.GetRepository<Like>(); }
+            get { return this.GetRepository<ArticleLike>(); }
         }
 
         public int SaveChanges()

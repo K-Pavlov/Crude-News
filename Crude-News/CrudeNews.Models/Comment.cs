@@ -1,6 +1,7 @@
 ﻿namespace CrudeNews.Models
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
 
     public class Comment
     {
@@ -12,10 +13,12 @@
 
         public int ArticleID { get; set; }
 
+        [Required]
         public virtual Article Article { get; set; }
 
         public DateTime DateCreated { get; set; }
 
+        [Required]
         public string Content { get; set; }
     }
 }

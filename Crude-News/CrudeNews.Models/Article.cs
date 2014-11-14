@@ -9,7 +9,7 @@
         public Article()
         {
             this.Tags = new HashSet<Tag>();
-            this.Likes = new HashSet<Like>();
+            this.Likes = new HashSet<ArticleLike>();
             this.Comments = new HashSet<Comment>();
         }
 
@@ -20,21 +20,22 @@
 
         public virtual User Author { get; set; }
 
-        [StringLength(100)]
+        [Required]
         public string Title { get; set; }
 
-        // TODO: [enable html]
+        [Required]
         public string Content { get; set; }
 
         public DateTime DateCreated { get; set; }
 
         public int CategoryID { get; set; }
 
+        [Required]
         public virtual Category Caterogy { get; set; }
 
         public virtual ICollection<Tag> Tags { get; set; }
 
-        public virtual ICollection<Like> Likes { get; set; }
+        public virtual ICollection<ArticleLike> Likes { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
     }

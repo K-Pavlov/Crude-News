@@ -15,5 +15,7 @@
            //// Add custom user claims here
             return userIdentity;
         }
+
+        public int Age { get; set; }
     }
 }

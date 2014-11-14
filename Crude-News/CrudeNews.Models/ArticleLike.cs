@@ -1,8 +1,9 @@
 ﻿namespace CrudeNews.Models
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
 
-    public class Like
+    public class ArticleLike
     {
         public int ID { get; set; }
 

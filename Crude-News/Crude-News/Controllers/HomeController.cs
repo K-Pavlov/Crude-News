@@ -31,12 +31,6 @@ namespace CrudeNews.Controllers
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
-            this.Data.Categories.Add(new Category
-            {
-                Name = "Cool category"
-            });
-
-            this.Data.SaveChanges();
             return View();
         }
 
