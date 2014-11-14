@@ -1,8 +1,40 @@
-﻿@{
+﻿@model IQueryable<CrudeNews.Models.Article>
+@{
     ViewBag.Title = "Home Page";
 }
 
 <div class="row">
-    <div class="col-md-4">
-    </div>
+    @foreach (var article in this.Model)
+    {
+        <div class="col-md-3">
+            @if (article.ImagePath != null)
+            {
+                <img src="@Url.Content(article.ImagePath)" width="300" height="200" />
+            }
+        </div>
+        <div class="col-md-9">
+            <table class="table table-bordered">
+                <tr>
+                    <td>@article.Title</td>
+                </tr>
+                <tr>
+                    <td>@article.Author.UserName</td>
+                </tr>
+                <tr>
+                    <td>@article.Caterogy.Name</td>
+                </tr>
+                <tr>
+                    <td>
+                        @article.Content
+                    </td>
+                </tr>
+                <tr>
+                    <td>@article.DateCreated</td>
+                </tr>
+                <tr>
+                    <td>@article.Tags</td>
+                </tr>
+            </table>
+        </div>
+    }
 </div>

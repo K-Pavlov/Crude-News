@@ -28,6 +28,8 @@
 
         public DateTime DateCreated { get; set; }
 
+        public string ImagePath { get; set; }
+
         public int CategoryID { get; set; }
 
         [Required]

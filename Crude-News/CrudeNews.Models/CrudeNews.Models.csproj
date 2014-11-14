@@ -56,6 +56,7 @@
     <Compile Include="Category.cs" />
     <Compile Include="Comment.cs" />
     <Compile Include="ArticleLike.cs" />
+    <Compile Include="CommentLike.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tag.cs" />
     <Compile Include="User.cs" />

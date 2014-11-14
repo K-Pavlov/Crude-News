@@ -25,7 +25,10 @@ namespace CrudeNews.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            var model = this.Data.Articles
+                .All()
+                .Where(x => x.ID < 10);
+            return View(model);
         }
 
         public ActionResult About()

@@ -5,8 +5,6 @@ VisualStudioVersion = 12.0.30324.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrudeNews", "Crude-News\CrudeNews.csproj", "{AFE81382-A2A2-4197-B6E7-834B5CCCAB2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrudeNews.Tests", "CrudeNews.Tests\CrudeNews.Tests.csproj", "{9B63FC2C-47BC-49EA-80D9-1A1B8370C350}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrudeNews.Data", "CrudeNews.Data\CrudeNews.Data.csproj", "{0042E104-2165-47BD-BF57-20954388E8F2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrudeNews.Models", "CrudeNews.Models\CrudeNews.Models.csproj", "{FF32661C-640D-464E-8E06-3D839CE5959E}"
@@ -21,10 +19,6 @@ Global
 		{AFE81382-A2A2-4197-B6E7-834B5CCCAB2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFE81382-A2A2-4197-B6E7-834B5CCCAB2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFE81382-A2A2-4197-B6E7-834B5CCCAB2B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9B63FC2C-47BC-49EA-80D9-1A1B8370C350}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9B63FC2C-47BC-49EA-80D9-1A1B8370C350}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9B63FC2C-47BC-49EA-80D9-1A1B8370C350}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9B63FC2C-47BC-49EA-80D9-1A1B8370C350}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0042E104-2165-47BD-BF57-20954388E8F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0042E104-2165-47BD-BF57-20954388E8F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0042E104-2165-47BD-BF57-20954388E8F2}.Release|Any CPU.ActiveCfg = Release|Any CPU

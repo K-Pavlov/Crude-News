@@ -18,21 +18,21 @@ namespace CrudeNews.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private ApplicationUserManager _userManager;
+        private CrudeNewsUserManager _userManager;
 
         public AccountController()
         {
         }
 
-        public AccountController(ApplicationUserManager userManager)
+        public AccountController(CrudeNewsUserManager userManager)
         {
             UserManager = userManager;
         }
 
-        public ApplicationUserManager UserManager {
+        public CrudeNewsUserManager UserManager {
             get
             {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<CrudeNewsUserManager>();
             }
             private set
             {

@@ -118,6 +118,11 @@ namespace CrudeNews.Data.Migrations
                     Caterogy = category
                 };
 
+                if (i % 2 == 0)
+                {
+                    article.ImagePath = "~/Content/Images/cat.jpg";
+                }
+
                 comment.Article = article;
                 article.Comments.Add(comment);
                 article.Tags.Add(tag);

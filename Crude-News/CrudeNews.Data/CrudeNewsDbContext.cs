@@ -21,7 +21,9 @@
 
         public IDbSet<Tag> Tags { get; set; }
 
-        public IDbSet<ArticleLike> Likes { get; set; }
+        public IDbSet<ArticleLike> ArticleLikes { get; set; }
+
+        public IDbSet<CommentLike> CommentLikes { get; set; }
 
         public static CrudeNewsDbContext Create()
         {
