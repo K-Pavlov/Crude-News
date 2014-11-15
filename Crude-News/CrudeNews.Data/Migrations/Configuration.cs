@@ -9,6 +9,7 @@ namespace CrudeNews.Data.Migrations
     using CrudeNews.Models;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
+    using System.Text;
 
     internal sealed class Configuration : DbMigrationsConfiguration<CrudeNewsDbContext>
     {
@@ -103,7 +104,7 @@ namespace CrudeNews.Data.Migrations
                 var comment = new Comment
                 {
                     Author = commentUser,
-                    Content = string.Format("{0} {1} {2}", category.Name, commentUser.UserName, i.ToString()),
+                    Content = this.GenerateLoremIpsum(10, 100, 2, 2, 1),
                     DateCreated = DateTime.Now,
                 };
 
@@ -112,20 +113,23 @@ namespace CrudeNews.Data.Migrations
                 {
                     Author = articleUser,
                     DateCreated = DateTime.Now,
-                    Content = string.Format("{2} {1} {0}", category.Name, articleUser.UserName, i.ToString()),
+                    Content = this.GenerateLoremIpsum(100, 1000, 2, 2, 5),
                     Title = string.Format("My title is: {0}", category.Name),
                     Caterogy = category
                 };
 
-                if (i % 2 == 0)
-                {
-                    article.ImagePath = "~/Content/Images/cat.jpg";
-                }
+                article.ImagePath = "~/Content/Images/cat.jpg";
 
                 comment.Article = article;
                 article.Comments.Add(comment);
                 article.Tags.Add(tag);
                 articles.Add(article);
+
+                if (i % 20 == 0)
+                {
+                    context.Articles.AddOrUpdate(articles.ToArray());
+                    articles.Clear();
+                }
             }
 
             context.Articles.AddOrUpdate(articles.ToArray());
@@ -153,6 +157,46 @@ namespace CrudeNews.Data.Migrations
             int userIndex = new Random().Next(0, users.Count - 1);
 
             return users[userIndex];
+        }
+
+        private string GenerateLoremIpsum(int minWords, int maxWords,
+            int minSentences, int maxSentences, int numParagraphs)
+        {
+
+            var words = new[]{"lorem", "ipsum", "dolor", "sit", "amet", "consectetuer",
+        "adipiscing", "elit", "sed", "diam", "nonummy", "nibh", "euismod",
+        "tincidunt", "ut", "laoreet", "dolore", "magna", "aliquam", "erat"};
+
+            var rand = new Random();
+            int numSentences = rand.Next(maxSentences - minSentences)
+                + minSentences + 1;
+            int numWords = rand.Next(maxWords - minWords) + minWords + 1;
+
+            var result = new StringBuilder();
+
+            for (int p = 0; p < numParagraphs; p++)
+            {
+                for (int s = 0; s < numSentences; s++)
+                {
+                    for (int w = 0; w < numWords; w++)
+                    {
+                        if (w > 0)
+                        { 
+                            result.Append(" ");
+                        }
+                        result.Append(words[rand.Next(words.Length)]);
+                    }
+                    result.Append(". ");
+                }
+
+                result.Append("\n");
+                if (p % 3 == 0)
+                {
+                    result.Append("\n");
+                }
+            }
+
+            return result.ToString();
         }
     }
 }

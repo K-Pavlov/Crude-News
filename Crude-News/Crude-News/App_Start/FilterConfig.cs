@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 
-namespace CrudeNews
+namespace CrudeNews.Web
 {
     public class FilterConfig
     {

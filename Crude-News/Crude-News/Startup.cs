@@ -4,8 +4,8 @@ using CrudeNews.Models;
 using CrudeNews.Data;
 using System;
 
-[assembly: OwinStartupAttribute(typeof(CrudeNews.Startup))]
-namespace CrudeNews
+[assembly: OwinStartupAttribute(typeof(CrudeNews.Web.Startup))]
+namespace CrudeNews.Web
 {
     public partial class Startup
     {

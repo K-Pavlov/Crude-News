@@ -1,0 +1,14 @@
+﻿@using CrudeNews.Web.Models.Articles
+@model ShowArticleViewModel
+@{
+    ViewBag.Title = "ViewArticle";
+}
+
+<h1>@this.Model.Title</h1>
+<div id="main-article-content">
+    <img style="width:300px; height:200px; float:left;" src="@Url.Content(this.Model.ImagePath)" />
+    <p style="display: inline; white-space: pre-line">@this.Model.Content</p>
+</div>
+<div id="comments" style="clear: both">
+
+</div>

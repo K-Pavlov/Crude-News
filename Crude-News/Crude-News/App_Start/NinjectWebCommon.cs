@@ -1,7 +1,7 @@
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(CrudeNews.App_Start.NinjectWebCommon), "Start")]
-[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(CrudeNews.App_Start.NinjectWebCommon), "Stop")]
+[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(CrudeNews.Web.App_Start.NinjectWebCommon), "Start")]
+[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(CrudeNews.Web.App_Start.NinjectWebCommon), "Stop")]
 
-namespace CrudeNews.App_Start
+namespace CrudeNews.Web.App_Start
 {
     using System;
     using System.Web;

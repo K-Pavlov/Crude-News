@@ -6,9 +6,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AutoMapper.QueryableExtensions;
-using CrudeNews.Models.Articles;
+using CrudeNews.Web.Models.Articles;
 
-namespace CrudeNews.Controllers
+namespace CrudeNews.Web.Controllers
 {
     public class HomeController : Controller
     {

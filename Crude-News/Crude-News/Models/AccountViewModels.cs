@@ -1,4 +1,4 @@
-﻿namespace CrudeNews.Models
+﻿namespace CrudeNews.Web.Models
 {
     using System.ComponentModel.DataAnnotations;
 

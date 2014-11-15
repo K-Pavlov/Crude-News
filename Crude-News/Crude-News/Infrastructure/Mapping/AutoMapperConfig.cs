@@ -1,4 +1,4 @@
-﻿namespace CrudeNews.Infrastructure.Mapping
+﻿namespace CrudeNews.Web.Infrastructure.Mapping
 {
     using System;
     using System.Collections.Generic;

@@ -1,7 +1,8 @@
-﻿namespace CrudeNews.Models.Articles
+﻿namespace CrudeNews.Web.Models.Articles
 {
     using System;
-    using CrudeNews.Infrastructure.Mapping;
+    using CrudeNews.Web.Infrastructure.Mapping;
+    using CrudeNews.Models;
 
     public class ArticleSmallViewModel : IMapFrom<Article>
     {

@@ -1,6 +1,7 @@
-﻿namespace CrudeNews.Models
+﻿namespace CrudeNews.Web.Models
 {
-    using CrudeNews.Infrastructure.Mapping;
+    using CrudeNews.Models;
+    using CrudeNews.Web.Infrastructure.Mapping;
 
     public class UserViewModel : IMapFrom<User>
     {

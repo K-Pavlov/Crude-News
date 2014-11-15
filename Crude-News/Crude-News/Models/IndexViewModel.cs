@@ -1,4 +1,4 @@
-﻿namespace CrudeNews.Models
+﻿namespace CrudeNews.Web.Models
 {
     public class IndexViewModel
     {

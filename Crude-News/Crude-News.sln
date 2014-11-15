@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30324.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrudeNews", "Crude-News\CrudeNews.csproj", "{AFE81382-A2A2-4197-B6E7-834B5CCCAB2B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrudeNews.Web", "Crude-News\CrudeNews.Web.csproj", "{AFE81382-A2A2-4197-B6E7-834B5CCCAB2B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrudeNews.Data", "CrudeNews.Data\CrudeNews.Data.csproj", "{0042E104-2165-47BD-BF57-20954388E8F2}"
 EndProject

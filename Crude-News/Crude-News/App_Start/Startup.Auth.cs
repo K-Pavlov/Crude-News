@@ -1,4 +1,4 @@
-﻿namespace CrudeNews
+﻿namespace CrudeNews.Web
 {
     using System;
 
