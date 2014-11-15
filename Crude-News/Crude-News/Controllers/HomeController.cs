@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AutoMapper.QueryableExtensions;
+using CrudeNews.Models.Articles;
 
 namespace CrudeNews.Controllers
 {
@@ -25,9 +27,23 @@ namespace CrudeNews.Controllers
 
         public ActionResult Index()
         {
-            var model = this.Data.Articles
-                .All()
-                .Where(x => x.ID < 10);
+            var allArticles = this.Data.Articles.All();
+
+            var model = new Dictionary<String, IQueryable<ArticleSmallViewModel>>();
+            var categories = this.Data.Categories.All();
+
+            foreach (var category in categories)
+            {
+                var modelArticlesInCategory = allArticles
+                    .Where(x => x.Caterogy.ID == category.ID)
+                    .OrderBy(x => x.DateCreated)
+                    .Take(3)
+                    .Project()
+                    .To<ArticleSmallViewModel>();
+
+                model.Add(category.Name, modelArticlesInCategory);    
+            }
+
             return View(model);
         }
 

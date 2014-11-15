@@ -1,5 +1,7 @@
 ﻿namespace CrudeNews.Models
 {
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Drawing;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
@@ -8,6 +10,13 @@
 
     public class User : IdentityUser
     {
+        [NotMapped]
+        public readonly Size AVATAR_SIZE = new Size(100, 100);
+
+        public int Age { get; set; }
+
+        public string AvatarPath { get; set; }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User> manager)
         {
             //// Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -15,7 +24,5 @@
            //// Add custom user claims here
             return userIdentity;
         }
-
-        public int Age { get; set; }
     }
 }

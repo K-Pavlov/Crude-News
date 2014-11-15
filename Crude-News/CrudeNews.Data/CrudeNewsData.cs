@@ -1,9 +1,10 @@
 ﻿namespace CrudeNews.Data
 {
-    using CrudeNews.Data.Repositories;
-    using CrudeNews.Models;
     using System;
     using System.Collections.Generic;
+
+    using CrudeNews.Data.Repositories;
+    using CrudeNews.Models;
 
     public class CrudeNewsData : ICrudeNewsData
     {
@@ -11,7 +12,7 @@
         private IDictionary<Type, object> repositories;
 
         public CrudeNewsData()
-            :this(new CrudeNewsDbContext())
+            : this(new CrudeNewsDbContext())
         {
         }
 
@@ -43,7 +44,7 @@
 
         public IRepository<Tag> Tags
         {
-            get { return GetRepository<Tag>(); }
+            get { return this.GetRepository<Tag>(); }
         }
 
         public IRepository<ArticleLike> Likes
@@ -61,7 +62,7 @@
             var typeOfRepository = typeof(T);
             if (!this.repositories.ContainsKey(typeOfRepository))
             {
-                var newRepository = Activator.CreateInstance(typeof(EFRepository<T>), context);
+                var newRepository = Activator.CreateInstance(typeof(EFRepository<T>), this.context);
                 this.repositories.Add(typeOfRepository, newRepository);
             }
 

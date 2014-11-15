@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CrudeNews.Models
+﻿namespace CrudeNews.Models
 {
+    using System;
+
     public class CommentLike
     {
         public int ID { get; set; }

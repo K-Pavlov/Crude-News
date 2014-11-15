@@ -1,13 +1,14 @@
 namespace CrudeNews.Data.Migrations
 {
-    using CrudeNews.Models;
-    using Microsoft.AspNet.Identity;
-    using Microsoft.AspNet.Identity.EntityFramework;
     using System;
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
+
+    using CrudeNews.Models;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
 
     internal sealed class Configuration : DbMigrationsConfiguration<CrudeNewsDbContext>
     {
@@ -93,7 +94,6 @@ namespace CrudeNews.Data.Migrations
                 manager.Create(user, string.Format("Password{0}", i.ToString()));
             }
 
-
             for (int i = 0; i < 100; i++)
             {
                 var category = this.GetRandomCategory(context);
@@ -105,7 +105,6 @@ namespace CrudeNews.Data.Migrations
                     Author = commentUser,
                     Content = string.Format("{0} {1} {2}", category.Name, commentUser.UserName, i.ToString()),
                     DateCreated = DateTime.Now,
-
                 };
 
                 var articleUser = this.GetRandomUser(context);

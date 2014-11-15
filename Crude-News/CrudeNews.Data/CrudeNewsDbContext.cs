@@ -1,11 +1,12 @@
 ﻿namespace CrudeNews.Data
 {
     using System.Data.Entity;
+    using System.Data.Entity.Validation;
     using System.Linq;
+
+    using CrudeNews.Data.Migrations;
     using CrudeNews.Models;
     using Microsoft.AspNet.Identity.EntityFramework;
-    using CrudeNews.Data.Migrations;
-    using System.Data.Entity.Validation;
 
     public class CrudeNewsDbContext : IdentityDbContext<User>
     {
