@@ -1,0 +1,19 @@
+﻿h4 {
+    margin: 0;
+    display: inline;
+    color: #666;
+    font-size: 25px;
+    font-family: "trebuchet ms", sans-serif;
+}
+
+.item {
+    background: #333;
+    text-align: center;
+    height: 300px !important;
+}
+
+.article-img {
+    margin: 0 auto;
+    height: 70%;
+    width: 20%;
+}

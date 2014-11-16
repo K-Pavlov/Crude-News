@@ -1,0 +1,12 @@
+﻿.small-article-image {
+    width: 100px;
+    height: 100px;
+}
+
+.col-md-6 {
+    border: 1px #888888 solid;
+    -moz-box-shadow: 0px 0px 6px 2px #1d1111;
+    -webkit-box-shadow: 0px 0px 6px 2px #1d1111;
+    box-shadow: 0px 0px 6px 2px #1d1111;
+    margin-bottom: 50px;
+}

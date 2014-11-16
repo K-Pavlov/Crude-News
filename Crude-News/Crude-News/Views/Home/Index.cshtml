@@ -1,13 +1,46 @@
 ﻿@using CrudeNews.Web.Models.Articles
-@model IDictionary<String, IQueryable<ArticleSmallViewModel>>
+@using CrudeNews.Web.Models
+@model IDictionary<CategoryViewModel, IList<ArticleSmallViewModel>>
+
+@Styles.Render("~/Content/index")
 
 @{
-    ViewBag.Title = "Home Page";
+    var mainCategory = this.Model.Keys.First();
+
+    foreach (var category in this.Model.Keys)
+    {
+        if (category.IsMainNews)
+        {
+            mainCategory = category;
+        }
+    }
+
+    var carouselArticle = this.Model.FirstOrDefault(x => x.Key.Name == mainCategory.Name);
+    this.Model.Remove(carouselArticle);
 }
 
-<div class="row">
-    @foreach (var modelWithCategory in this.Model)
-    {
-        @Html.Partial("~/Views/Shared/_ArticleSmall.cshtml", modelWithCategory)
-    }
-</div>
+@Html.Partial("~/Views/Articles/_Carousel.cshtml", carouselArticle)
+
+@foreach (var categoryArticles in this.Model)
+{
+    <div class="col-md-6 col-xs-height">
+        <h3>@categoryArticles.Key.Name</h3>
+
+        @if (categoryArticles.Value.Any())
+        {
+            foreach (var article in categoryArticles.Value)
+            {
+                <a href="Articles/View/@article.ID">@article.Title</a>
+                <img class="small-article-image" src="@Url.Content(article.ImagePath)" />
+                <p>@(new string(article.Content.Take(100).ToArray()))</p>
+                <div>@article.DateCreate</div>
+            }
+        }
+        else
+        {
+            <p>No articles in this category</p>
+        }
+    </div>
+}
+
+@Scripts.Render("~/bundles/colHeightEqual");
