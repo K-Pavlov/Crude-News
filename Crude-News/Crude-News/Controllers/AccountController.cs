@@ -15,6 +15,7 @@
     using Microsoft.Owin.Security;
     using System.Text;
     using System;
+    using CrudeNews.Helpers;
 
     [Authorize]
     public class AccountController : Controller
@@ -476,14 +477,20 @@
         {
             if (file != null)
             {
+                if (!ImageProcessor.IsValidImage(file))
+                {
+                    TempData["AvatarError"] = "Please upload an image file";
+                    return this.RedirectToAction("Manage");
+                }
+
                 string avatarFolderLocation = "~/Content/Avatars";
                 string fileExtension = Path.GetExtension(file.FileName);
                 string fileName = Path.GetFileNameWithoutExtension(file.FileName);
                 string fullName = fileName + "_" + this.GetRandomString(16) + fileExtension;
                 string path = Path.Combine(
-                    Server.MapPath(avatarFolderLocation),fullName);
+                    Server.MapPath(avatarFolderLocation), fullName);
 
-                file.SaveAs(path);
+                ImageProcessor.SaveAsAvatar(file, path);
 
                 var currentUser = this.data.Users
                     .All()
@@ -498,7 +505,30 @@
                 this.data.SaveChanges();
             }
 
-            return RedirectToAction("Manage");
+            return this.RedirectToAction("Manage");
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult ChangeAge(int age)
+        {
+            var userName = this.User.Identity.Name;
+            var user = this.data.Users.All().FirstOrDefault(x => x.UserName == userName);
+            user.Age = age;
+            this.data.SaveChanges();
+
+            var model = AutoMapper.Mapper.Map<UserViewModel>(user);
+
+            //Paranoia
+            if (user == null)
+            {
+                this.TempData["UserError"] = "Doge didn't expect that. Wow.";
+                return this.View("Error");
+            }
+            else
+            {
+                return this.View("Manage", model);
+            }
         }
 
         private string GetRandomString(int size)

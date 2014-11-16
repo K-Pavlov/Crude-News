@@ -24,6 +24,7 @@
             this.Data = data;
         }
 
+        // GET Home/Index
         public ActionResult Index()
         {
             var allArticles = this.Data.Articles.All();
@@ -48,12 +49,14 @@
             return View(model);
         }
 
+        // GET Home/About
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
             return View();
         }
 
+        // GET Home/Contact
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";

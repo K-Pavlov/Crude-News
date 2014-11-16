@@ -19,7 +19,7 @@
             {
                 var currentArticle = this.Model.Value[i];
                 <div class="@MvcHtmlString.Create(i == 0 ? "active" : "") item">
-                    <a href="Articles/View/@currentArticle.ID">
+                    <a href="Articles/Show/@currentArticle.ID">
                         <img class="article-img" src="@Url.Content(currentArticle.ImagePath)" />
                     </a>
                     <h4>@currentArticle.Title</h4>

@@ -8,28 +8,46 @@
 }
 
 <h2>@ViewBag.Title</h2>
-<img src="@Url.Content(this.Model.AvatarPath)" />
-<p class="text-success">@ViewBag.StatusMessage</p>
+<div class="col-md-4">
+    <img src="@Url.Content(this.Model.AvatarPath)" />
+</div>
+<div class="col-md-6">
+    <p>
+        <strong>Username</strong>: @this.Model.Username
+    </p>
+    <p>
+        @using (Html.BeginForm("ChangeAge", "Account", FormMethod.Post,
+           new { @class = "form-group" }))
+        {
+            @Html.AntiForgeryToken()
+            <strong>Age: </strong> @: @this.Model.Age @Html.EditorFor(x => x.Age)
+            <input type="submit" />
+        }
+    </p>
+    <p>
+        <a href="@Url.Action("ChangePassword", "Account")" role="button" class="btn btn-success btn-large">Change password</a>
+    </p>
+</div>
+
 <div class="row">
     @Html.AntiForgeryToken()
     <div class="col-md-12">
-        <a href="@Url.Action("ChangePassword", "Account")" role="button" class="btn btn-success btn-large">Change password</a>
-
-        <section id="externalLogins">
-            @Html.Action("RemoveAccountList")
-            @Html.Partial("_ExternalLoginsListPartial", new CrudeNews.Web.Models.ExternalLoginListViewModel { Action = "LinkLogin", ReturnUrl = ViewBag.ReturnUrl })
-        </section>
-
         @using (Html.BeginForm("UploadAvatar", "Account", FormMethod.Post,
-                            new { enctype = "multipart/form-data" ,  @class = "form-group" }))
+                            new { enctype = "multipart/form-data", @class = "form-group" }))
         {
             @Html.AntiForgeryToken()
-            <label for="file">Upload Image:</label>
+            <label for="file">Want a new avatar?</label>
             <input type="file" name="file" id="file" style="width: 100%;" />
-            <input type="submit" value="Upload" class="submit" />
+            <input type="submit" value="Change" class="submit" />
+        }
+
+        @if (this.TempData["AvatarError"] != null)
+        {
+            <p class="text-danger">@this.TempData["AvatarError"]</p>
         }
     </div>
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+

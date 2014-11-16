@@ -26,7 +26,7 @@ namespace CrudeNews.Controllers
 
         }
 
-        public ActionResult View(int id)
+        public ActionResult Show(int id)
         {
             var model = this.Data.Articles
                 .All()
