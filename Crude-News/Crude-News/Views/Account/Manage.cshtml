@@ -1,12 +1,17 @@
 ﻿@using Microsoft.AspNet.Identity;
+@using CrudeNews.Web.Models
+
+@model UserViewModel
+
 @{
-    ViewBag.Title = "Manage Account";
+    ViewBag.Title = "Hello, " + this.Model.Username;
 }
 
-<h2>@ViewBag.Title.</h2>
-
+<h2>@ViewBag.Title</h2>
+<img src="@Url.Content(this.Model.AvatarPath)" />
 <p class="text-success">@ViewBag.StatusMessage</p>
 <div class="row">
+    @Html.AntiForgeryToken()
     <div class="col-md-12">
         <a href="@Url.Action("ChangePassword", "Account")" role="button" class="btn btn-success btn-large">Change password</a>
 
@@ -14,6 +19,15 @@
             @Html.Action("RemoveAccountList")
             @Html.Partial("_ExternalLoginsListPartial", new CrudeNews.Web.Models.ExternalLoginListViewModel { Action = "LinkLogin", ReturnUrl = ViewBag.ReturnUrl })
         </section>
+
+        @using (Html.BeginForm("UploadAvatar", "Account", FormMethod.Post,
+                            new { enctype = "multipart/form-data" ,  @class = "form-group" }))
+        {
+            @Html.AntiForgeryToken()
+            <label for="file">Upload Image:</label>
+            <input type="file" name="file" id="file" style="width: 100%;" />
+            <input type="submit" value="Upload" class="submit" />
+        }
     </div>
 </div>
 @section Scripts {

@@ -10,9 +10,6 @@
 
     public class User : IdentityUser
     {
-        [NotMapped]
-        public readonly Size AVATAR_SIZE = new Size(100, 100);
-
         public int Age { get; set; }
 
         public string AvatarPath { get; set; }

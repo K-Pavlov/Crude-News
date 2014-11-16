@@ -1,35 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using Owin;
-using CrudeNews.Web.Models;
-using CrudeNews.Models;
-
-namespace CrudeNews.Web.Controllers
+﻿namespace CrudeNews.Web.Controllers
 {
+    using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Web;
+    using System.Web.Mvc;
+
+    using AutoMapper.QueryableExtensions;
+    using CrudeNews.Data;
+    using CrudeNews.Models;
+    using CrudeNews.Web.Models;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.Owin;
+    using Microsoft.Owin.Security;
+    using System.Text;
+    using System;
+
     [Authorize]
     public class AccountController : Controller
     {
         private CrudeNewsUserManager _userManager;
+        private ICrudeNewsData data;
 
         public AccountController()
+            : this(new CrudeNewsData())
         {
         }
 
-        public AccountController(CrudeNewsUserManager userManager)
+        public AccountController(ICrudeNewsData data)
         {
-            UserManager = userManager;
+            this.data = data;
         }
 
-        public CrudeNewsUserManager UserManager {
+        public CrudeNewsUserManager UserManager
+        {
             get
             {
                 return _userManager ?? HttpContext.GetOwinContext().GetUserManager<CrudeNewsUserManager>();
@@ -120,7 +124,7 @@ namespace CrudeNews.Web.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
-            if (userId == null || code == null) 
+            if (userId == null || code == null)
             {
                 return View("Error");
             }
@@ -180,13 +184,13 @@ namespace CrudeNews.Web.Controllers
         {
             return View();
         }
-	
+
         //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
-            if (code == null) 
+            if (code == null)
             {
                 return View("Error");
             }
@@ -229,6 +233,8 @@ namespace CrudeNews.Web.Controllers
         [AllowAnonymous]
         public ActionResult ResetPasswordConfirmation()
         {
+            var currentUser = this._userManager.Users;
+
             return View();
         }
 
@@ -257,7 +263,12 @@ namespace CrudeNews.Web.Controllers
         // GET: /Account/Manage
         public ActionResult Manage()
         {
-            return View();
+            var model = this.data.Users.All()
+                .Project()
+                .To<UserViewModel>()
+                .FirstOrDefault(x => x.Username == this.User.Identity.Name);
+
+            return View(model);
         }
 
         //
@@ -353,13 +364,13 @@ namespace CrudeNews.Web.Controllers
                     if (result.Succeeded)
                     {
                         await SignInAsync(user, isPersistent: false);
-                        
+
                         // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                         // Send an email with this link
                         // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                         // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                         // SendEmail(user.Email, callbackUrl, "Confirm your account", "Please confirm your account by clicking this link");
-                        
+
                         return RedirectToLocal(returnUrl);
                     }
                 }
@@ -459,6 +470,52 @@ namespace CrudeNews.Web.Controllers
             return (ActionResult)PartialView("_RemoveAccountPartial", linkedAccounts);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UploadAvatar(HttpPostedFileBase file)
+        {
+            if (file != null)
+            {
+                string avatarFolderLocation = "~/Content/Avatars";
+                string fileExtension = Path.GetExtension(file.FileName);
+                string fileName = Path.GetFileNameWithoutExtension(file.FileName);
+                string fullName = fileName + "_" + this.GetRandomString(16) + fileExtension;
+                string path = Path.Combine(
+                    Server.MapPath(avatarFolderLocation),fullName);
+
+                file.SaveAs(path);
+
+                var currentUser = this.data.Users
+                    .All()
+                    .FirstOrDefault(x => x.UserName == this.User.Identity.Name);
+
+                if (currentUser != null)
+                {
+                    currentUser.AvatarPath = avatarFolderLocation + "/" + fullName;
+                }
+
+                this.data.Users.Update(currentUser);
+                this.data.SaveChanges();
+            }
+
+            return RedirectToAction("Manage");
+        }
+
+        private string GetRandomString(int size)
+        {
+            Random random = new Random();
+            StringBuilder builder = new StringBuilder();
+            char ch;
+            for (int i = 0; i < size; i++)
+            {
+                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
+                builder.Append(ch);
+            }
+
+            return builder.ToString();
+        }
+
+
         protected override void Dispose(bool disposing)
         {
             if (disposing && UserManager != null)
@@ -532,7 +589,8 @@ namespace CrudeNews.Web.Controllers
 
         private class ChallengeResult : HttpUnauthorizedResult
         {
-            public ChallengeResult(string provider, string redirectUri) : this(provider, redirectUri, null)
+            public ChallengeResult(string provider, string redirectUri)
+                : this(provider, redirectUri, null)
             {
             }
 
