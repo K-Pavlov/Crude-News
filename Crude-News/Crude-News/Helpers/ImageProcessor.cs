@@ -19,11 +19,11 @@ namespace CrudeNews.Helpers
                     || Path.GetExtension(file.FileName).ToLower() == ".jpeg";
         }
 
-        public static void SaveAsAvatar(HttpPostedFileBase file, string fileName)
+        public static void SaveAsAvatar(HttpPostedFileBase file, string path)
         {
             using (var avatar = ResizeImageToAvatar(file))
             {
-                avatar.Save(fileName);
+                avatar.Save(path);
             }
 
         }

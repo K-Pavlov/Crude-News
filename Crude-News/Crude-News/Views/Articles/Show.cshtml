@@ -1,14 +1,21 @@
 ﻿@using CrudeNews.Web.Models.Articles
-@model ShowArticleViewModel
+@model ArticleViewModel
 @{
     ViewBag.Title = "ViewArticle";
 }
 
-<h1>@this.Model.Title</h1>
-<div id="main-article-content">
+<h1>@WebUtility.HtmlDecode(this.Model.Title)</h1>
+<div class="col-lg-8">
     <img style="width:300px; height:200px; float:left;" src="@Url.Content(this.Model.ImagePath)" />
-    <p style="display: inline; white-space: pre-line">@this.Model.Content</p>
-</div>
-<div id="comments" style="clear: both">
-
+    <p style="display: inline; white-space: pre-line">@WebUtility.HtmlDecode(this.Model.Content))</p>
+    <div class="divider"></div>
+    <h4 class="text-info">
+        Comments
+    </h4>
+    @foreach (var comment in this.Model.Comments)
+    {
+        <div style="clear:both">
+            @WebUtility.HtmlDecode(comment.Content)
+        </div>
+    }
 </div>

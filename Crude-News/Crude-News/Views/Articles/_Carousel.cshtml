@@ -2,7 +2,6 @@
 @using CrudeNews.Web.Models.Articles
 
 @model KeyValuePair<CategoryViewModel, IList<ArticleSmallViewModel>>
-
 @if (this.Model.Value.Any())
 {
     <div id="article-carousel" class="carousel slide" data-interval="3000" data-ride="carousel">
@@ -24,7 +23,7 @@
                     </a>
                     <h4>@currentArticle.Title</h4>
                     <div class="carousel-caption">
-                        <p>@currentArticle.DateCreate</p>
+                        <p>@currentArticle.DateCreated</p>
                     </div>
                 </div>
             }

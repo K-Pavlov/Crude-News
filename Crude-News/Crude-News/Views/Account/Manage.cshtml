@@ -20,7 +20,8 @@
            new { @class = "form-group" }))
         {
             @Html.AntiForgeryToken()
-            <strong>Age: </strong> @: @this.Model.Age @Html.EditorFor(x => x.Age)
+            @Html.LabelFor(x => x.Age)
+            @Html.EditorFor(x => x.Age)
             <input type="submit" />
         }
     </p>

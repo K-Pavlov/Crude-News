@@ -1,5 +1,7 @@
 ﻿namespace CrudeNews.Web.Controllers
 {
+    using System;
+    using System.Text;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
@@ -8,20 +10,19 @@
 
     using AutoMapper.QueryableExtensions;
     using CrudeNews.Data;
+    using CrudeNews.Helpers;
     using CrudeNews.Models;
     using CrudeNews.Web.Models;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin.Security;
-    using System.Text;
-    using System;
-    using CrudeNews.Helpers;
 
     [Authorize]
     public class AccountController : Controller
     {
         private CrudeNewsUserManager _userManager;
-        private ICrudeNewsData data;
+
+        private ICrudeNewsData Data { get; set; }
 
         public AccountController()
             : this(new CrudeNewsData())
@@ -30,7 +31,7 @@
 
         public AccountController(ICrudeNewsData data)
         {
-            this.data = data;
+            this.Data = data;
         }
 
         public CrudeNewsUserManager UserManager
@@ -264,7 +265,7 @@
         // GET: /Account/Manage
         public ActionResult Manage()
         {
-            var model = this.data.Users.All()
+            var model = this.Data.Users.All()
                 .Project()
                 .To<UserViewModel>()
                 .FirstOrDefault(x => x.Username == this.User.Identity.Name);
@@ -483,26 +484,26 @@
                     return this.RedirectToAction("Manage");
                 }
 
-                string avatarFolderLocation = "~/Content/Avatars";
+                string folderLocation = "~/Content/Avatars";
                 string fileExtension = Path.GetExtension(file.FileName);
                 string fileName = Path.GetFileNameWithoutExtension(file.FileName);
-                string fullName = fileName + "_" + this.GetRandomString(16) + fileExtension;
+                string fullName = fileName + "_" + GetRandomString(16) + fileExtension;
                 string path = Path.Combine(
-                    Server.MapPath(avatarFolderLocation), fullName);
+                    Server.MapPath(folderLocation), fullName);
 
                 ImageProcessor.SaveAsAvatar(file, path);
 
-                var currentUser = this.data.Users
+                var currentUser = this.Data.Users
                     .All()
                     .FirstOrDefault(x => x.UserName == this.User.Identity.Name);
 
                 if (currentUser != null)
                 {
-                    currentUser.AvatarPath = avatarFolderLocation + "/" + fullName;
+                    currentUser.AvatarPath = path;
                 }
 
-                this.data.Users.Update(currentUser);
-                this.data.SaveChanges();
+                this.Data.Users.Update(currentUser);
+                this.Data.SaveChanges();
             }
 
             return this.RedirectToAction("Manage");
@@ -513,9 +514,9 @@
         public ActionResult ChangeAge(int age)
         {
             var userName = this.User.Identity.Name;
-            var user = this.data.Users.All().FirstOrDefault(x => x.UserName == userName);
+            var user = this.Data.Users.All().FirstOrDefault(x => x.UserName == userName);
             user.Age = age;
-            this.data.SaveChanges();
+            this.Data.SaveChanges();
 
             var model = AutoMapper.Mapper.Map<UserViewModel>(user);
 
@@ -528,6 +529,36 @@
             else
             {
                 return this.View("Manage", model);
+            }
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ViewProfile(string id)
+        {
+            if (id != null)
+            {
+                var user = this.Data.Users.Find(id);
+                var model = AutoMapper.Mapper.Map<UserViewModel>(user);
+
+                return View(model);
+            }
+            else
+            {
+                var currentUser = this.Data.Users
+                    .All()
+                    .Project()
+                    .To<UserViewModel>()
+                    .FirstOrDefault(x => x.Username == this.User.Identity.Name);
+
+                if (currentUser != null)
+                {
+                    return View("Manage", currentUser);
+                }
+                else
+                {
+                    return View("Index", "Home");
+                }
             }
         }
 

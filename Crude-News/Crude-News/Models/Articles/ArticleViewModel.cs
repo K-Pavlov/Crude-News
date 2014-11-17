@@ -6,7 +6,7 @@
     using CrudeNews.Models;
     using CrudeNews.Web.Infrastructure.Mapping;
 
-    public class ShowArticleViewModel : IMapFrom<Article>
+    public class ArticleViewModel : IMapFrom<Article>
     {
         public User Author { get; set; }
 
@@ -18,7 +18,7 @@
 
         public string ImagePath { get; set; }
 
-        public Category Category { get; set; }
+        public CategoryViewModel Category { get; set; }
 
         public ICollection<Tag> Tags { get; set; }
 

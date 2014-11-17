@@ -1,0 +1,10 @@
+﻿.divider {
+  width: 30%;
+  margin: 10px 0;
+  height: 1px;
+  background-color: #999;
+}
+
+.form-control {
+    width: 300px
+}

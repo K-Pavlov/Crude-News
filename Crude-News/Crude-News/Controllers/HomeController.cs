@@ -27,7 +27,6 @@
         // GET Home/Index
         public ActionResult Index()
         {
-            var allArticles = this.Data.Articles.All();
             var model = new Dictionary<CategoryViewModel, IList<ArticleSmallViewModel>>();
             var categories = this.Data.Categories
                 .All()
@@ -36,10 +35,14 @@
 
             foreach (var category in categories)
             {
-                var modelArticlesInCategory = allArticles
+                var modelArticlesInCategory = this.Data.Articles
+                    .All()
+                    .ToList()
                     .Where(x => x.Caterogy.Name == category.Name)
-                    .OrderBy(x => x.DateCreated)
+                    .OrderByDescending(x => x.DateCreated)
+                    .ThenByDescending(x => x.Title)
                     .Take(3)
+                    .AsQueryable()
                     .Project()
                     .To<ArticleSmallViewModel>();
 

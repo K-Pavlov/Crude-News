@@ -31,9 +31,9 @@
             foreach (var article in categoryArticles.Value)
             {
                 <img class="small-article-image" src="@Url.Content(article.ImagePath)" />
-                <h4><a href="Articles/Show/@article.ID">@article.Title</a></h4>
-                <p>@(new string(article.Content.Take(100).ToArray()))</p>
-                <div>@article.DateCreate</div>
+                <h4><a href="Articles/Show/@article.ID">@WebUtility.HtmlDecode(article.Title)</a></h4>
+                <p>@WebUtility.HtmlDecode(new string(article.Content.Take(100).ToArray()))</p>
+                <div>@article.DateCreated</div>
                 <div class="divider"></div>
             }
         }
