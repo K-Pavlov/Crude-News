@@ -1,0 +1,26 @@
+﻿@using CrudeNews.Models
+@model ICollection<Comment>
+
+@foreach (var comment in this.Model)
+{
+    <div class="row">
+        <div class="col-md-2">
+            <div class="well text-center">
+                @if (comment.Author != null)
+                {
+                    <img width="20" height="20" src="@Url.Content(comment.Author.AvatarPath)" />
+                    @comment.Author.UserName
+                }
+                else
+                {
+                    <img src="~/Content/Images/cat.jpg"  width="20" height="20"/>
+                    <text>Anonymous</text>
+                }
+            </div>
+        </div>
+        <div class="col-md-5">
+            @comment.Content
+            <span class="text-info">Created on @comment.DateCreated</span>
+        </div>
+    </div>
+}

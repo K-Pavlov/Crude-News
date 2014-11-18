@@ -1,0 +1,59 @@
+﻿@using PagedList
+@using PagedList.Mvc
+@using CrudeNews.Web.ViewModels.Articles;
+@model ICollection<ArticleViewModel>
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript" src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+
+<div id="articles">
+    @Html.Partial("_Pages")
+</div>
+
+<ul class="pagination">
+    <li>
+        @Ajax.ActionLink(HttpUtility.HtmlDecode("&laquo;"), "GetPage", "PageableArticleList",
+        new
+        {
+            page = this.TempData["PreviousPage"]
+        },
+        new AjaxOptions
+        {
+            UpdateTargetId = "articles",
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "Get"
+        })
+    </li>
+    @for (int i = 1; i <= (int)this.TempData["NumberOfPages"]; i++)
+    {
+        <li>
+            @Ajax.ActionLink(i.ToString(), "GetPage", "PageableArticleList",
+            new
+            {
+                page = i
+            },
+            new AjaxOptions
+            {
+                UpdateTargetId = "articles",
+                InsertionMode = InsertionMode.Replace,
+                HttpMethod = "GET"
+            })
+        </li>
+    }
+    <li>
+        @Ajax.ActionLink(HttpUtility.HtmlDecode("&raquo;"), "GetPage", "PageableArticleList",
+        new
+        {
+            page = this.TempData["NextPage"]
+        },
+        new AjaxOptions
+        {
+            UpdateTargetId = "articles",
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "Get"
+        })
+    </li>
+</ul>
+
+

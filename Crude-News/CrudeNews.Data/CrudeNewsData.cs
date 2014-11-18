@@ -5,6 +5,8 @@
 
     using CrudeNews.Data.Repositories;
     using CrudeNews.Models;
+    using System.Data.Entity.Validation;
+    using System.Data.Entity.Core;
 
     public class CrudeNewsData : ICrudeNewsData
     {
@@ -45,11 +47,6 @@
         public IRepository<Tag> Tags
         {
             get { return this.GetRepository<Tag>(); }
-        }
-
-        public IRepository<ArticleLike> Likes
-        {
-            get { return this.GetRepository<ArticleLike>(); }
         }
 
         public int SaveChanges()

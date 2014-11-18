@@ -1,21 +1,59 @@
-﻿@using CrudeNews.Web.Models.Articles
+﻿@using CrudeNews.Web.ViewModels.Articles
 @model ArticleViewModel
 @{
     ViewBag.Title = "ViewArticle";
 }
 
+@Scripts.Render("~/bundles/jquery")
+
 <h1>@WebUtility.HtmlDecode(this.Model.Title)</h1>
 <div class="col-lg-8">
-    <img style="width:300px; height:200px; float:left;" src="@Url.Content(this.Model.ImagePath)" />
+    <img style="width:300px; height:200px; display: inline-block;" src="@Url.Content(this.Model.ImagePath)" />
     <p style="display: inline; white-space: pre-line">@WebUtility.HtmlDecode(this.Model.Content))</p>
     <div class="divider"></div>
-    <h4 class="text-info">
+    <h4 class="text-info" style="clear:both; margin-top:100px">
         Comments
     </h4>
-    @foreach (var comment in this.Model.Comments)
-    {
-        <div style="clear:both">
-            @WebUtility.HtmlDecode(comment.Content)
-        </div>
-    }
+    <div id="comments">
+        @if (this.Model.Comments.Any())
+        {
+            @Html.Partial("~/Views/Comments/_DisplayComments.cshtml", this.Model.Comments)
+        }
+        else
+        {
+            <div class="text-info">Be the first to comment</div>
+        }
+    </div>
+
+    @Html.ValidationSummary()
+    <form action="/Comments/Create" method="post" id="commentForm">
+        @Html.AntiForgeryToken()
+        <input type="text" name="content" class="form-control" />
+        <input type="submit" class="form-control" />
+    </form>
+
+    <script>
+        $(function () {
+            $('#commentForm').submit(function (evt) {
+                //prevent the browsers default function
+                evt.preventDefault();
+                //grab the form and wrap it with jQuery
+                var $form = $(this);
+
+                var data = $form.serialize() + '&ArticleId=5';
+                console.log(data);
+                //send your ajax request
+                $.ajax({
+                    type: $form.prop('method'),
+                    url: $form.prop('action'),
+                    data: data,
+                    dataType: "json",
+                    traditional: true,
+                    success: function (response) {
+                        $('#comments').html(response.toDisplay);
+                    }
+                });
+            });
+        });
+    </script>
 </div>

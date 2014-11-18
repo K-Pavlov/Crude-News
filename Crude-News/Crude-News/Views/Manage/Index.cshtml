@@ -1,0 +1,54 @@
+﻿@using Microsoft.AspNet.Identity;
+@using CrudeNews.Web.ViewModels
+
+@model UserViewModel
+
+@{
+    ViewBag.Title = "Hello, " + this.Model.Username;
+}
+
+<h2>@ViewBag.Title</h2>
+<div class="col-md-4">
+    <img src="@Url.Content(this.Model.AvatarPath)" />
+</div>
+<div class="col-md-6">
+    <p>
+        <strong>Username</strong>: this.Model.UserName
+    </p>
+    <p>
+        @using (Html.BeginForm("ChangeAge", "Manage", FormMethod.Post,
+           new { @class = "form-group" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.LabelFor(x => x.Age)
+            @Html.EditorFor(x => x.Age)
+            <input type="submit" />
+        }
+    </p>
+    <p>
+        <a href="@Url.Action("ChangePassword")" role="button" class="btn btn-success btn-large">Change password</a>
+    </p>
+</div>
+
+<div class="row">
+    @Html.AntiForgeryToken()
+    <div class="col-md-12">
+        @using (Html.BeginForm("UploadAvatar", "Manage", FormMethod.Post,
+                            new { enctype = "multipart/form-data", @class = "form-group" }))
+        {
+            @Html.AntiForgeryToken()
+            <label for="file">Want a new avatar?</label>
+            <input type="file" name="file" id="file" style="width: 100%;" />
+            <input type="submit" value="Change" class="submit" />
+        }
+
+        @if (this.TempData["AvatarError"] != null)
+        {
+            <p class="text-danger">@this.TempData["AvatarError"]</p>
+        }
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

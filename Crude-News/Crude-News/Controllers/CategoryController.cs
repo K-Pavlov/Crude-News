@@ -1,5 +1,5 @@
 ﻿using CrudeNews.Data;
-using CrudeNews.Web.Models;
+using CrudeNews.Web.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,28 +7,20 @@ using System.Web;
 using System.Web.Mvc;
 using AutoMapper.QueryableExtensions;
 
-namespace CrudeNews.Controllers
+namespace CrudeNews.Web.Controllers
 {
-    public class CategoryController : Controller
+    public class CategoryController : BaseController
     {
-        private ICrudeNewsData Data { get; set; }
-
-        public CategoryController()
-            :this(new CrudeNewsData())
-        {
-
-        }
-
         public CategoryController(ICrudeNewsData data)
+            : base (data)
         {
-            this.Data = data;
         }
 
 
         // GET Category/View/{name}
         public ActionResult All(string name)
         {
-            var model = this.Data.Categories
+            var model = this.data.Categories
                 .All()
                 .Where(x => x.Name == name)
                 .Project()

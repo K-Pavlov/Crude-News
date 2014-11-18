@@ -12,26 +12,19 @@
     using CrudeNews.Data;
     using CrudeNews.Helpers;
     using CrudeNews.Models;
-    using CrudeNews.Web.Models;
+    using CrudeNews.Web.ViewModels;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin.Security;
 
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private CrudeNewsUserManager _userManager;
 
-        private ICrudeNewsData Data { get; set; }
-
-        public AccountController()
-            : this(new CrudeNewsData())
-        {
-        }
-
         public AccountController(ICrudeNewsData data)
+            : base(data)
         {
-            this.Data = data;
         }
 
         public CrudeNewsUserManager UserManager
@@ -72,7 +65,7 @@
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Invalid username or password.");
+                    ModelState.AddModelError(String.Empty, "Invalid username or password.");
                 }
             }
 
@@ -170,7 +163,7 @@
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
                 // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
+                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                 // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
                 // return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
@@ -259,18 +252,6 @@
                 message = ManageMessageId.Error;
             }
             return RedirectToAction("Manage", new { Message = message });
-        }
-
-        //
-        // GET: /Account/Manage
-        public ActionResult Manage()
-        {
-            var model = this.Data.Users.All()
-                .Project()
-                .To<UserViewModel>()
-                .FirstOrDefault(x => x.Username == this.User.Identity.Name);
-
-            return View(model);
         }
 
         //
@@ -401,19 +382,6 @@
             return View();
         }
 
-        public ActionResult ChangePassword(ManageMessageId? message)
-        {
-            ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : "";
-            ViewBag.HasLocalPassword = HasPassword();
-            ViewBag.ReturnUrl = Url.Action("Manage");
-            return View();
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ManageUserViewModel model)
@@ -472,111 +440,6 @@
             return (ActionResult)PartialView("_RemoveAccountPartial", linkedAccounts);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult UploadAvatar(HttpPostedFileBase file)
-        {
-            if (file != null)
-            {
-                if (!ImageProcessor.IsValidImage(file))
-                {
-                    TempData["AvatarError"] = "Please upload an image file";
-                    return this.RedirectToAction("Manage");
-                }
-
-                string folderLocation = "~/Content/Avatars";
-                string fileExtension = Path.GetExtension(file.FileName);
-                string fileName = Path.GetFileNameWithoutExtension(file.FileName);
-                string fullName = fileName + "_" + GetRandomString(16) + fileExtension;
-                string path = Path.Combine(
-                    Server.MapPath(folderLocation), fullName);
-
-                ImageProcessor.SaveAsAvatar(file, path);
-
-                var currentUser = this.Data.Users
-                    .All()
-                    .FirstOrDefault(x => x.UserName == this.User.Identity.Name);
-
-                if (currentUser != null)
-                {
-                    currentUser.AvatarPath = path;
-                }
-
-                this.Data.Users.Update(currentUser);
-                this.Data.SaveChanges();
-            }
-
-            return this.RedirectToAction("Manage");
-        }
-
-        [ValidateAntiForgeryToken]
-        [HttpPost]
-        public ActionResult ChangeAge(int age)
-        {
-            var userName = this.User.Identity.Name;
-            var user = this.Data.Users.All().FirstOrDefault(x => x.UserName == userName);
-            user.Age = age;
-            this.Data.SaveChanges();
-
-            var model = AutoMapper.Mapper.Map<UserViewModel>(user);
-
-            //Paranoia
-            if (user == null)
-            {
-                this.TempData["UserError"] = "Doge didn't expect that. Wow.";
-                return this.View("Error");
-            }
-            else
-            {
-                return this.View("Manage", model);
-            }
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public ActionResult ViewProfile(string id)
-        {
-            if (id != null)
-            {
-                var user = this.Data.Users.Find(id);
-                var model = AutoMapper.Mapper.Map<UserViewModel>(user);
-
-                return View(model);
-            }
-            else
-            {
-                var currentUser = this.Data.Users
-                    .All()
-                    .Project()
-                    .To<UserViewModel>()
-                    .FirstOrDefault(x => x.Username == this.User.Identity.Name);
-
-                if (currentUser != null)
-                {
-                    return View("Manage", currentUser);
-                }
-                else
-                {
-                    return View("Index", "Home");
-                }
-            }
-        }
-
-        private string GetRandomString(int size)
-        {
-            Random random = new Random();
-            StringBuilder builder = new StringBuilder();
-            char ch;
-            for (int i = 0; i < size; i++)
-            {
-                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
-                builder.Append(ch);
-            }
-
-            return builder.ToString();
-        }
-
-
         protected override void Dispose(bool disposing)
         {
             if (disposing && UserManager != null)
@@ -626,14 +489,6 @@
         private void SendEmail(string email, string callbackUrl, string subject, string message)
         {
             // For information on sending mail, please visit http://go.microsoft.com/fwlink/?LinkID=320771
-        }
-
-        public enum ManageMessageId
-        {
-            ChangePasswordSuccess,
-            SetPasswordSuccess,
-            RemoveLoginSuccess,
-            Error
         }
 
         private ActionResult RedirectToLocal(string returnUrl)

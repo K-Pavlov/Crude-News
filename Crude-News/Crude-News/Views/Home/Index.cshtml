@@ -1,5 +1,5 @@
-﻿@using CrudeNews.Web.Models.Articles
-@using CrudeNews.Web.Models
+﻿@using CrudeNews.Web.ViewModels.Articles
+@using CrudeNews.Web.ViewModels
 @model IDictionary<CategoryViewModel, IList<ArticleSmallViewModel>>
 
 @Styles.Render("~/Content/index")
@@ -32,7 +32,7 @@
             {
                 <img class="small-article-image" src="@Url.Content(article.ImagePath)" />
                 <h4><a href="Articles/Show/@article.ID">@WebUtility.HtmlDecode(article.Title)</a></h4>
-                <p>@WebUtility.HtmlDecode(new string(article.Content.Take(100).ToArray()))</p>
+                <p>@WebUtility.HtmlDecode(new string(article.Content.Take(100).ToArray()) + " ...")</p>
                 <div>@article.DateCreated</div>
                 <div class="divider"></div>
             }

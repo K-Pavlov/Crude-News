@@ -6,36 +6,28 @@
 
     using AutoMapper.QueryableExtensions;
     using CrudeNews.Data;
-    using CrudeNews.Web.Models.Articles;
-    using CrudeNews.Web.Models;
+    using CrudeNews.Web.ViewModels.Articles;
+    using CrudeNews.Web.ViewModels;
 
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
-        private ICrudeNewsData Data { get; set; }
-
-        public HomeController()
-            : this(new CrudeNewsData())
-        {
-
-        }
-
         public HomeController(ICrudeNewsData data)
+            : base(data)
         {
-            this.Data = data;
         }
 
         // GET Home/Index
         public ActionResult Index()
         {
             var model = new Dictionary<CategoryViewModel, IList<ArticleSmallViewModel>>();
-            var categories = this.Data.Categories
+            var categories = this.data.Categories
                 .All()
                 .Project()
                 .To<CategoryViewModel>();
 
             foreach (var category in categories)
             {
-                var modelArticlesInCategory = this.Data.Articles
+                var modelArticlesInCategory = this.data.Articles
                     .All()
                     .ToList()
                     .Where(x => x.Caterogy.Name == category.Name)
@@ -50,21 +42,6 @@
             }
 
             return View(model);
-        }
-
-        // GET Home/About
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-            return View();
-        }
-
-        // GET Home/Contact
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
         }
     }
 }

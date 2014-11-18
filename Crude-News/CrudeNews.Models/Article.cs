@@ -9,7 +9,6 @@
         public Article()
         {
             this.Tags = new HashSet<Tag>();
-            this.Likes = new HashSet<ArticleLike>();
             this.Comments = new HashSet<Comment>();
         }
 
@@ -37,8 +36,6 @@
         public virtual Category Caterogy { get; set; }
 
         public virtual ICollection<Tag> Tags { get; set; }
-
-        public virtual ICollection<ArticleLike> Likes { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
     }

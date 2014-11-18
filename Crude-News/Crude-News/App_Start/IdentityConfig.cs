@@ -17,7 +17,7 @@ namespace CrudeNews.Web
         {
         }
 
-        public static CrudeNewsUserManager Create(IdentityFactoryOptions<CrudeNewsUserManager> options, IOwinContext context) 
+        public static CrudeNewsUserManager Create(IdentityFactoryOptions<CrudeNewsUserManager> options, IOwinContext context)
         {
             var manager = new CrudeNewsUserManager(new UserStore<User>(context.Get<CrudeNewsDbContext>()));
             // Configure validation logic for usernames
@@ -35,17 +35,21 @@ namespace CrudeNews.Web
                 RequireLowercase = false,
                 RequireUppercase = false,
             };
+
             // Register two factor authentication providers. This application uses Phone and Emails as a step of receiving a code for verifying the user
             // You can write your own provider and plug in here.
-            manager.RegisterTwoFactorProvider("PhoneCode", new PhoneNumberTokenProvider<User>
-            {
-                MessageFormat = "Your security code is: {0}"
-            });
+            manager.RegisterTwoFactorProvider("PhoneCode",
+                new PhoneNumberTokenProvider<User>
+                {
+                    MessageFormat = "Your security code is: {0}"
+                });
+
             manager.RegisterTwoFactorProvider("EmailCode", new EmailTokenProvider<User>
             {
                 Subject = "Security Code",
                 BodyFormat = "Your security code is: {0}"
             });
+
             manager.EmailService = new EmailService();
             manager.SmsService = new SmsService();
             var dataProtectionProvider = options.DataProtectionProvider;
